@@ -7,7 +7,7 @@ Adicionar descriçao
 ## Autores
 
 - George Lucas Souza Nunes
-- 
+- Rafael Oliveira Rosário
 - 
 - 
 - 
