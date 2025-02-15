@@ -1,2 +1,5 @@
-ale-py==0.10.1
-gymnasium==1.0.0
+ale-py
+gymnasium[atari,accept-rom-license]
+pygame
+torch
+numpy
