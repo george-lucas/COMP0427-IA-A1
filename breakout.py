@@ -2,7 +2,6 @@ import gymnasium as gym
 import ale_py
 from stable_baselines3 import DQN
 from stable_baselines3.common.env_util import make_atari_env
-from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import CheckpointCallback
 
 # Configurações
@@ -12,7 +11,6 @@ save_path = './models/dqn_breakout'
 
 # Crie o ambiente do Atari 2600
 env = make_atari_env(env_name, n_envs=1, seed=42)
-#env = Monitor(env)  # Para registrar métricas
 
 # Defina um callback para salvar checkpoints do modelo
 checkpoint_callback = CheckpointCallback(save_freq=100000, save_path=save_path,
@@ -34,7 +32,8 @@ model = DQN(
     exploration_fraction=0.1,
     exploration_final_eps=0.01,
     verbose=1,
-    tensorboard_log="./tensorboard/dqn_breakout/"
+    tensorboard_log="./tensorboard/dqn_breakout/",
+    device='cuda'  # Adicione esta linha para usar a GPU
 )
 
 # Treine o agente
