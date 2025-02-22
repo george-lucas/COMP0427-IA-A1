@@ -104,10 +104,6 @@ for step in range(total_timesteps):
     # Treine o modelo periodicamente
     if step > model.learning_starts and step % model.train_freq == 0:
         loss_dict = model.train(gradient_steps=model.gradient_steps, batch_size=model.batch_size)
-        
-        # Exibir o erro (loss) a cada 1000 passos
-        if step % 1000 == 0:
-            print(f"Step: {step}, Loss: {loss_dict['loss']}")
 
     # Salve checkpoints
     if step % checkpoint_callback.save_freq == 0:
