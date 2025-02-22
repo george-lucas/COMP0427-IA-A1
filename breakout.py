@@ -102,7 +102,7 @@ for step in range(total_timesteps):
     obs = new_obs
 
     # Treine o modelo periodicamente
-    if step > model.learning_starts and step % model.train_freq == 0:
+    if step > model.learning_starts and step % model.train_freq.frequency == 0:
         loss_dict = model.train(gradient_steps=model.gradient_steps, batch_size=model.batch_size)
 
     # Salve checkpoints
