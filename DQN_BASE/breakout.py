@@ -4,7 +4,7 @@ from stable_baselines3 import DQN
 from stable_baselines3.common.env_util import make_atari_env
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import CheckpointCallback
-from custom_policy import CNN_MLP_Policy
+from CNN_MLP.custom_policy import CNN_MLP_Policy
 
 
 # Configurações
