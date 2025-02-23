@@ -7,6 +7,7 @@ Adicionar descriçao
 ## Autores
 
 - George Lucas Souza Nunes
+- Gustavo Lucas Santana
 - Rafael Oliveira Rosário
 - 
 - 
