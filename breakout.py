@@ -4,10 +4,12 @@ from stable_baselines3 import DQN
 from stable_baselines3.common.env_util import make_atari_env
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import CheckpointCallback
+from custom_policy import CNN_MLP_Policy
+
 
 # Configurações
 env_name = 'ALE/Breakout-v5'
-total_timesteps = 100000  # Número de passos de treino
+total_timesteps = 1000  # Número de passos de treino
 save_path = './models/dqn_breakout'
 
 # Crie o ambiente do Atari 2600
@@ -15,12 +17,11 @@ env = make_atari_env(env_name, n_envs=1, seed=42)
 #env = Monitor(env)  # Para registrar métricas
 
 # Defina um callback para salvar checkpoints do modelo
-checkpoint_callback = CheckpointCallback(save_freq=100000, save_path=save_path,
+checkpoint_callback = CheckpointCallback(save_freq=10, save_path=save_path,
                                          name_prefix='dqn_breakout_checkpoint')
 
-# Inicialize o agente DQN
 model = DQN(
-    policy="CnnPolicy",
+    policy=CNN_MLP_Policy,
     env=env,
     learning_rate=0.0001,
     buffer_size=100000,
