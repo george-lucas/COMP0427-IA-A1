@@ -5,7 +5,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 
 # Configurações
 env_name = 'ALE/Breakout-ram-v5'
-model_path = './models/dqn_breakout_ram'  # Caminho do modelo salvo
+model_path = './models/dqn_breakout_ram.zip'  # Caminho do modelo salvo
 vecnorm_path = './models/dqn_breakout_ram_vecnormalize.pkl'  # Caminho dos stats de normalização
 
 # 1. Criar ambiente (com mesmo setup do treino)
