@@ -6,7 +6,7 @@ from stable_baselines3.common.callbacks import CheckpointCallback
 
 # Configurações
 env_name = 'ALE/Breakout-ram-v5'  # "-ram" para observações de memória
-total_timesteps = 50_000
+total_timesteps = 500000
 save_path = './models/dqn_breakout_ram'
 
 # Criar ambiente com observações RAM
@@ -20,23 +20,24 @@ env = DummyVecEnv([make_env])  # Ambiente vetorizado
 env = VecNormalize(env, norm_obs=True, norm_reward=False)
 
 # Callback para salvar checkpoints
-checkpoint_callback = CheckpointCallback(
-        save_freq=100000,
-        save_path=save_path,
-        name_prefix='dqn_ram'
-        )
+checkpoint_callback = CheckpointCallback(save_freq=100000, save_path=save_path,
+                                         name_prefix='dqn_ram')
 
 # Modelo DQN com política MLP para dados RAM
 model = DQN(
-        policy="MlpPolicy",  # Usar MLP em vez de CNN
+        policy="MlpPolicy", # Usar MLP em vez de CNN
         env=env,
-        learning_rate=1e-4,
-        buffer_size=100_000,
-        batch_size=128,
-        learning_starts=10_000,
+        learning_rate=0.0001,
+        buffer_size=100000,
+        batch_size=32,
+        learning_starts=10000,
+        tau = 0.1, # NOTE: acredito que não funciona
+        gamma = 0.99, # NOTE: acredito que não funciona
+        train_freq=4,
         target_update_interval=5000,
-        exploration_fraction=0.2,
-        exploration_final_eps=0.02,
+        exploration_fraction=0.1,
+        exploration_final_eps=0.01,
+
         policy_kwargs=dict(
             net_arch=[256, 256]  # Arquitetura da rede neural
             ),
