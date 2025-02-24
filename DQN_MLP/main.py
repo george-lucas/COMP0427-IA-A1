@@ -2,6 +2,7 @@ import gymnasium as gym
 import ale_py
 from stable_baselines3 import DQN
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
+from force_fire import ForceFireEnv
 
 # Configurações
 env_name = 'ALE/Breakout-ram-v5'
@@ -10,7 +11,8 @@ vecnorm_path = './models/dqn_breakout_ram_vecnormalize.pkl'  # Caminho dos stats
 
 # 1. Criar ambiente (com mesmo setup do treino)
 def make_env():
-    return gym.make(env_name, render_mode='human')  # Modo de renderização "human"
+    return ForceFireEnv( # NOTE: força o agente a atirar para continuar o jogo
+            gym.make(env_name, render_mode='human'))  # Modo de renderização "human"
 
 env = DummyVecEnv([make_env])
 

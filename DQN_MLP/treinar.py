@@ -1,23 +1,31 @@
 import gymnasium as gym
+import numpy as np
 import ale_py
+from force_fire import ForceFireEnv
 from stable_baselines3 import DQN
-from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
+from stable_baselines3.common.atari_wrappers import ClipRewardEnv, EpisodicLifeEnv
+from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize, SubprocVecEnv
 from stable_baselines3.common.callbacks import CheckpointCallback
 
 # Configurações
 env_name = 'ALE/Breakout-ram-v5'  # "-ram" para observações de memória
-total_timesteps = 500000
+total_timesteps = 50000
 save_path = './models/dqn_breakout_ram'
+
 
 # Criar ambiente com observações RAM
 def make_env():
-    env = gym.make(env_name, render_mode='rgb_array')
+    env = ForceFireEnv(
+            gym.make(env_name, render_mode='rgb_array'))
+
     return env
 
 env = DummyVecEnv([make_env])  # Ambiente vetorizado
+# env = SubprocVecEnv(env)  # Ambiente vetorizado
 
 # Normalizar observações RAM (0-255 → 0-1)
 env = VecNormalize(env, norm_obs=True, norm_reward=False)
+
 
 # Callback para salvar checkpoints
 checkpoint_callback = CheckpointCallback(save_freq=100000, save_path=save_path,
@@ -31,8 +39,8 @@ model = DQN(
         buffer_size=100000,
         batch_size=32,
         learning_starts=10000,
-        tau = 0.1, # NOTE: acredito que não funciona
-        gamma = 0.99, # NOTE: acredito que não funciona
+        tau = 0.1,
+        gamma = 0.99,
         train_freq=4,
         target_update_interval=5000,
         exploration_fraction=0.1,
