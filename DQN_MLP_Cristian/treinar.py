@@ -9,7 +9,7 @@ from stable_baselines3.common.callbacks import CheckpointCallback
 
 # Configurações
 env_name = 'ALE/Breakout-ram-v5'  # "-ram" para observações de memória
-total_timesteps = 50000
+total_timesteps = 500_000
 save_path = './models/dqn_breakout_ram'
 
 
@@ -28,8 +28,8 @@ env = VecNormalize(env, norm_obs=True, norm_reward=False)
 
 
 # Callback para salvar checkpoints
-checkpoint_callback = CheckpointCallback(save_freq=100000, save_path=save_path,
-                                         name_prefix='dqn_ram')
+# checkpoint_callback = CheckpointCallback(save_freq=100000, save_path=save_path,
+#                                          name_prefix='dqn_ram')
 
 # Modelo DQN com política MLP para dados RAM
 model = DQN(
@@ -65,7 +65,7 @@ def gerar_png_modelo(model):
 gerar_png_modelo(model)
 
 # Treinar
-model.learn(total_timesteps=total_timesteps, callback=checkpoint_callback)
+model.learn(total_timesteps=total_timesteps)
 model.save(save_path)
 env.save(save_path + "_vecnormalize.pkl")  # Salva as estatísticas
 env.close()
