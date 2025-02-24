@@ -3,6 +3,7 @@ import numpy as np
 import ale_py
 from force_fire import ForceFireEnv
 from stable_baselines3 import DQN
+from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.atari_wrappers import ClipRewardEnv, EpisodicLifeEnv
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize, SubprocVecEnv
 from stable_baselines3.common.callbacks import CheckpointCallback
@@ -17,6 +18,7 @@ save_path = './models/dqn_breakout_ram'
 def make_env():
     env = ForceFireEnv(
             gym.make(env_name, render_mode='rgb_array'))
+    env = Monitor(env, "./logs")  # Defina o diretório para logs
 
     return env
 
@@ -24,7 +26,7 @@ env = DummyVecEnv([make_env])  # Ambiente vetorizado
 # env = SubprocVecEnv(env)  # Ambiente vetorizado
 
 # Normalizar observações RAM (0-255 → 0-1)
-env = VecNormalize(env, norm_obs=True, norm_reward=False)
+env = VecNormalize(env, norm_obs=False, norm_reward=False)
 
 
 # Callback para salvar checkpoints
@@ -32,6 +34,8 @@ env = VecNormalize(env, norm_obs=True, norm_reward=False)
 #                                          name_prefix='dqn_ram')
 
 # Modelo DQN com política MLP para dados RAM
+arch = [256, 256, 256]
+model_name = "_".join(str(x) for x in [*arch, total_timesteps])
 model = DQN(
         policy="MlpPolicy", # Usar MLP em vez de CNN
         env=env,
@@ -47,10 +51,10 @@ model = DQN(
         exploration_final_eps=0.01,
 
         policy_kwargs=dict(
-            net_arch=[256, 256]  # Arquitetura da rede neural
+            net_arch=arch  # Arquitetura da rede neural
             ),
         verbose=1,
-        tensorboard_log="./tensorboard/dqn_breakout_ram/"
+        tensorboard_log=f"./tensorboard/dqn_breakout_ram_{model_name}/"
         )
 
 def gerar_png_modelo(model):
