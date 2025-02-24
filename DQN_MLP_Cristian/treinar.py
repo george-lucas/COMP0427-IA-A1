@@ -53,6 +53,17 @@ model = DQN(
         tensorboard_log="./tensorboard/dqn_breakout_ram/"
         )
 
+def gerar_png_modelo(model):
+    import torch as torch
+    from torchviz import make_dot
+    fake_input = torch.randn(1, 128)  # Entrada fictícia (128 bytes da RAM)
+    q_values = model.policy.q_net(fake_input)  # Passa pela rede
+    dot = make_dot(q_values, params=dict(model.policy.q_net.named_parameters()))
+    dot.format = "png"
+    dot.render("model_architecture")  # Salva como "dqn_architecture.png"
+
+gerar_png_modelo(model)
+
 # Treinar
 model.learn(total_timesteps=total_timesteps, callback=checkpoint_callback)
 model.save(save_path)
